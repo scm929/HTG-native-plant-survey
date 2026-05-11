@@ -14,6 +14,7 @@ const yesBtn         = document.getElementById('yes-btn');
 const noBtn          = document.getElementById('no-btn');
 const saveError      = document.getElementById('save-error');
 const saveToast      = document.getElementById('save-toast');
+const coordsDisplay  = document.getElementById('coords-display');
 
 // GPS state
 let currentLat     = null;
@@ -62,6 +63,7 @@ function startGPS() {
       const { latitude, longitude } = position.coords;
       currentLat = latitude;
       currentLng = longitude;
+      coordsDisplay.textContent = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
 
       const needsGeocode = lastGeocodedLat === null
         || haversineMeters(lastGeocodedLat, lastGeocodedLng, latitude, longitude) >= 5;
