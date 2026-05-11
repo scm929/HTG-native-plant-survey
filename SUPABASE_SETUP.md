@@ -171,7 +171,7 @@ This prevents anyone other than the two of you from ever creating an account.
 
 ## You're Done
 
-Supabase is ready. The next step is deploying the app to GitHub Pages so both of you can access it from your iPhones. See `README.md` for those instructions once they're written.
+Supabase is ready. The next step is deploying the app to GitHub Pages so both of you can access it from your iPhones. See `README.md` for deployment instructions.
 
 If anything went wrong, double-check:
 - The SQL ran without errors (Part 2)

@@ -6,7 +6,7 @@ Work through tasks in order. Each phase builds on the previous. Read `CLAUDE.md`
 
 ## Phase 1 — Field Tool
 
-### Task 1: Project scaffold
+### Task 1: Project scaffold — COMPLETE
 
 - Create the file structure defined in `CLAUDE.md`
 - `index.html` — mobile shell with correct viewport meta tag, links to `style.css` and `app.js`
@@ -15,7 +15,7 @@ Work through tasks in order. Each phase builds on the previous. Read `CLAUDE.md`
 - `style.css` — mobile-first base styles: system font stack, large tap targets (min 56px), no horizontal scroll, safe area insets for iPhone notch
 - Confirm the project opens in Safari on iPhone without errors before moving on
 
-### Task 2: Supabase setup guide
+### Task 2: Supabase setup guide — COMPLETE
 
 Write `SUPABASE_SETUP.md` — a plain-English, step-by-step guide for a non-technical user to:
 1. Create a free Supabase account at supabase.com
@@ -23,15 +23,15 @@ Write `SUPABASE_SETUP.md` — a plain-English, step-by-step guide for a non-tech
 3. Run the SQL from `CLAUDE.md` to create the `observations` table and enable RLS policies
 4. Enable Google as an OAuth provider in Supabase Auth (Authentication → Providers → Google)
 5. Disable public sign-ups (Authentication → Settings → toggle off "Enable sign-ups")
-6. Find and copy the project URL and `anon` key (Settings → API) into the placeholder constants in `app.js`
+6. Find and copy the project URL and publishable key (Settings → API Keys) into the constants in `app.js`
 
-Assume zero technical knowledge. Use numbered steps, plain language, and note where to click in the Supabase UI.
+Guide is written and Supabase is fully configured — `observations` table created, RLS enabled, Google OAuth wired up, sign-ups disabled, and `app.js` populated with the live project URL and publishable key.
 
 ### Task 3: Google authentication
 
 In `index.html` and `app.js`:
 - Import Supabase JS v2 from CDN (see `CLAUDE.md`)
-- Initialize Supabase client with placeholder constants `SUPABASE_URL` and `SUPABASE_ANON_KEY` at the top of `app.js`
+- `SUPABASE_URL` and `SUPABASE_ANON_KEY` are already set in `app.js` with live values — do not overwrite them
 - On page load: check session state
   - Not logged in → show full-screen login view with "Sign in with Google" button, nursery name, and brief description
   - Logged in → show field tap interface

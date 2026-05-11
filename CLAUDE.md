@@ -57,8 +57,8 @@ create table observations (
 
 - Supabase Row-Level Security (RLS) must always be enabled on the `observations` table
 - Only authenticated users may read or write any data
-- The Supabase `anon` key is safe in frontend code — RLS is what protects the data
-- The `service_role` key must never appear anywhere in frontend code or be committed to the repo
+- The Supabase anon/publishable key (`sb_publishable_...`) is safe in frontend code — RLS is what protects the data
+- The `service_role` / secret key must never appear anywhere in frontend code or be committed to the repo
 - Sign-ups must be disabled in Supabase Auth settings — only the two owners may ever log in
 
 ```sql
