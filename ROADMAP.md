@@ -42,35 +42,15 @@ Implemented and working. Two gotchas encountered and resolved:
 - The Supabase CDN UMD bundle declares a global variable named `supabase` — naming our client `const supabase` caused a collision. The client variable is named `client` in `app.js`.
 - Sign-ups must be **enabled** when both owners first log in (to create their accounts), then disabled. The setup guide has been updated to reflect this ordering.
 
-### Task 4: GPS and reverse geocoding
+### Task 4: GPS and reverse geocoding — COMPLETE
 
-In `app.js`:
-- Start `navigator.geolocation.watchPosition()` after login is confirmed
-- Track the most recent latitude and longitude in memory
-- Track the last geocoded position; only fire a new Nominatim request when the user has moved more than 5 meters from the last geocoded point (use Haversine distance formula)
-- On a new geocode result, update the address display at the top of the Yes/No screen
-- Address format: house number + street name only (e.g. "412 Maple St") — not city, state, or zip
-- GPS status indicator showing one of three states:
-  - "Getting location…" — waiting for first fix
-  - Address string — GPS active and address known
-  - "Location unavailable — check GPS permissions" — if GPS fails or is denied
-- Yes and No buttons must be disabled (grayed out, not tappable) until a GPS fix is established
+Implemented. Known issue discovered in field testing: Nominatim uses address interpolation for areas where individual houses aren't mapped in OpenStreetMap, producing house numbers that don't exist (e.g. "156 Maple St" when no such house exists). GPS coordinates are accurate — only the address label is unreliable. Fix planned before Task 6: show street name only, drop the house number.
 
-### Task 5: Yes / No tap interface
+A live coordinate display (`lat, lng` in small text under the address) was added temporarily for debugging. Field-confirmed: coordinates are accurate. Remove this once the address issue is resolved.
 
-In `index.html`, `app.js`, and `style.css`:
-- Address display prominently at the top — large enough to read at a glance while walking
-- Two large buttons below:
-  - **YES** — green (`#2d7a2d`), label "Has native plants"
-  - **NO** — red (`#c0392b`), label "No native plants"
-  - Minimum height: 80px each. Consider making them fill most of the screen vertically — this is the primary interaction
-- On tap:
-  1. Capture current `latitude`, `longitude`, and `address` from the GPS watcher
-  2. Insert row into Supabase `observations` table: `has_natives`, `latitude`, `longitude`, `address`, `user_id` (from auth session) — `created_at` is set automatically
-  3. Show brief confirmation: green flash or toast "Saved!" visible for 1.5 seconds
-  4. Return to ready state for next house
-- On Supabase insert failure: show a persistent red error message, do not reset — allow the user to retry the same tap
-- Disable buttons during the save operation to prevent double-taps
+### Task 5: Yes / No tap interface — COMPLETE
+
+Implemented. Known issue: a save failure was observed in field testing. The current error message ("Save failed — tap again to retry") does not expose the underlying Supabase error, making it hard to diagnose. Fix needed at start of next session: surface the actual error detail so we can identify the root cause (likely an expired session, RLS policy issue, or network problem).
 
 ### Task 6: GitHub Pages deployment
 
@@ -79,7 +59,7 @@ In `index.html`, `app.js`, and `style.css`:
 - Confirm `manifest.json` and `sw.js` are in the repo root
 - Add instructions to `README.md` for enabling GitHub Pages: Settings → Pages → Deploy from `main` branch, root folder (`/`)
 
-**Phase 1 complete when:** Both users can install the app on their iPhones via Safari "Add to Home Screen", log in with Google, walk a street, and tap Yes or No for each house. Data appears in the Supabase table. Address shows correctly at the top of the screen.
+**Phase 1 complete when:** Both users can install the app on their iPhones via Safari "Add to Home Screen", log in with Google, walk a street, and tap Yes or No for each house. Data appears in the Supabase table. Address (or street name) shows correctly at the top of the screen. Save failure bug resolved.
 
 ---
 
@@ -129,6 +109,6 @@ Simple approach — do not over-engineer:
 - Task 11: Coverage percentage by street or neighborhood
 - Task 12: Hotspot detection — streets near the 25% native coverage threshold
 - Task 13: Target list view — ranked streets sorted by proximity to 25%
-- Task 14: CSV export of all observations
+- Task 14: CSV export — YES observations only (has_natives = true), for marketing postcard outreach. Columns: address, latitude, longitude, date. Consider re-geocoding coordinates via Google at export time to get accurate addresses, since Nominatim is unreliable for individual house numbers.
 - Task 15: Date range filter on dashboard
 - Task 16: "Add to Home Screen" prompt — nudge users to install PWA if not already installed
