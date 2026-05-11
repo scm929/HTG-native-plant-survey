@@ -112,3 +112,7 @@ Simple approach — do not over-engineer:
 - Task 14: CSV export — YES observations only (has_natives = true), for marketing postcard outreach. Columns: address, latitude, longitude, date. Consider re-geocoding coordinates via Google at export time to get accurate addresses, since Nominatim is unreliable for individual house numbers.
 - Task 15: Date range filter on dashboard
 - Task 16: "Add to Home Screen" prompt — nudge users to install PWA if not already installed
+- Task 17: Address management — plan and build before implementing. Two distinct use cases need design thought:
+  1. **Manual address entry** — adding known addresses from online orders or other sources without physically walking there. Requires forward geocoding (address → coordinates), the reverse of what the field app does. Need to decide: separate form in the dashboard, or a different flow entirely?
+  2. **Annual re-survey** — revisiting previously recorded addresses each year to track whether natives were added or removed over time. Requires thinking through the data model: do we store multiple observations per address over time and show a history, or overwrite the existing record? How does the map show change over time? This has implications for the analytics tasks too.
+  Design this task before building it — the decisions here affect the database schema and the dashboard.
