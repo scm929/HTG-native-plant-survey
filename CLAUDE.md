@@ -79,6 +79,12 @@ create policy "Authenticated users can insert"
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 ```
 
+The UMD bundle declares a global variable named `supabase`. Never name the client variable `supabase` in app code — it will collide. Use `client` instead:
+
+```javascript
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+```
+
 ## GPS + Reverse Geocoding Pattern
 
 Use `watchPosition()` for continuous GPS tracking. On each position update, if the user has moved more than 5 meters, fire a Nominatim reverse geocode request to update the displayed address. This means the address is pre-fetched while walking between houses — no waiting when the user stops in front of a house.

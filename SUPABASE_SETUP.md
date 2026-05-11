@@ -126,17 +126,19 @@ This part requires setting up a Google project so the app can use "Sign in with 
 
 ## Part 4 — Disable Public Sign-Ups
 
-This prevents anyone other than the two of you from ever creating an account.
+This prevents anyone other than the two of you from ever creating an account. **Important: both of you must sign in to the app at least once before you do this step.** Disabling sign-ups before you've logged in will lock you out.
 
-1. In Supabase, click **Authentication** in the left sidebar, then click **Settings** (or **Configuration** depending on your Supabase version — look for the gear icon under Authentication).
+1. Make sure both owners have opened the app and signed in with Google successfully at least once. This creates your accounts in Supabase.
 
-2. Find the toggle labeled **Enable sign-ups** (it may say "Allow new users to sign up").
+2. In Supabase, click **Authentication** in the left sidebar, then click **Settings** (or **Configuration** depending on your Supabase version — look for the gear icon under Authentication).
 
-3. Turn it **off**.
+3. Find the toggle labeled **Enable sign-ups** (it may say "Allow new users to sign up").
 
-4. Click **Save**.
+4. Turn it **off**.
 
-> After both of you have logged in for the first time, this setting ensures no new accounts can ever be created, even if someone knew your app URL.
+5. Click **Save**.
+
+> Once disabled, no new accounts can ever be created — even if someone knew your app URL. The two existing accounts will continue to work normally.
 
 ---
 

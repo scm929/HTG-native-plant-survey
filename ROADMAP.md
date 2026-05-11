@@ -27,7 +27,7 @@ Write `SUPABASE_SETUP.md` — a plain-English, step-by-step guide for a non-tech
 
 Guide is written and Supabase is fully configured — `observations` table created, RLS enabled, Google OAuth wired up, sign-ups disabled, and `app.js` populated with the live project URL and publishable key.
 
-### Task 3: Google authentication
+### Task 3: Google authentication — COMPLETE
 
 In `index.html` and `app.js`:
 - Import Supabase JS v2 from CDN (see `CLAUDE.md`)
@@ -37,6 +37,10 @@ In `index.html` and `app.js`:
   - Logged in → show field tap interface
 - Handle OAuth redirect callback correctly so user lands back in the app after Google login
 - Show logged-in user's email in small text at top of screen with a "Sign out" link
+
+Implemented and working. Two gotchas encountered and resolved:
+- The Supabase CDN UMD bundle declares a global variable named `supabase` — naming our client `const supabase` caused a collision. The client variable is named `client` in `app.js`.
+- Sign-ups must be **enabled** when both owners first log in (to create their accounts), then disabled. The setup guide has been updated to reflect this ordering.
 
 ### Task 4: GPS and reverse geocoding
 

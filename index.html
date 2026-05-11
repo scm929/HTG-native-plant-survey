@@ -13,8 +13,28 @@
 </head>
 <body>
   <div id="app">
-    <p class="loading-text">Loading…</p>
+
+    <div id="login-view" class="hidden">
+      <div class="login-content">
+        <h1>Native Plant Survey</h1>
+        <p>Field survey tool for recording native plant coverage by neighborhood.</p>
+        <button id="sign-in-btn">Sign in with Google</button>
+        <p id="login-error" class="login-error"></p>
+      </div>
+    </div>
+
+    <div id="field-view" class="hidden">
+      <header class="app-header">
+        <span id="user-email" class="user-email"></span>
+        <button id="sign-out-btn" class="sign-out-btn">Sign out</button>
+      </header>
+      <main id="field-main">
+        <!-- Tasks 4 and 5 will populate this -->
+      </main>
+    </div>
+
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
