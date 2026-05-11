@@ -1,0 +1,10 @@
+{
+  "name": "Native Plant Survey",
+  "short_name": "Plant Survey",
+  "description": "Field survey tool for recording native plant coverage by neighborhood.",
+  "theme_color": "#2d7a2d",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": ".",
+  "scope": "."
+}
