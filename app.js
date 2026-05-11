@@ -12,13 +12,19 @@ const loginError     = document.getElementById('login-error');
 const addressDisplay = document.getElementById('address-display');
 const yesBtn         = document.getElementById('yes-btn');
 const noBtn          = document.getElementById('no-btn');
+const saveError      = document.getElementById('save-error');
+const saveToast      = document.getElementById('save-toast');
 
 // GPS state
-let currentLat = null;
-let currentLng = null;
+let currentLat     = null;
+let currentLng     = null;
+let currentAddress = null;
 let lastGeocodedLat = null;
 let lastGeocodedLng = null;
 let watchId = null;
+
+// Auth state
+let currentSession = null;
 
 function haversineMeters(lat1, lng1, lat2, lng2) {
   const R = 6371000;
@@ -66,7 +72,8 @@ function startGPS() {
         const address = await reverseGeocode(latitude, longitude);
         // Only update if coordinates haven't drifted to a new geocode request
         if (lastGeocodedLat === latitude && lastGeocodedLng === longitude) {
-          addressDisplay.textContent = address || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+          currentAddress = address || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+          addressDisplay.textContent = currentAddress;
         }
       }
 
@@ -87,11 +94,46 @@ function stopGPS() {
   }
   currentLat = null;
   currentLng = null;
+  currentAddress = null;
   lastGeocodedLat = null;
   lastGeocodedLng = null;
   yesBtn.disabled = true;
   noBtn.disabled = true;
   addressDisplay.textContent = 'Getting location…';
+  saveError.classList.add('hidden');
+  saveError.textContent = '';
+}
+
+let toastTimer = null;
+
+async function saveObservation(hasNatives) {
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
+  saveError.classList.add('hidden');
+  saveError.textContent = '';
+
+  const { error } = await client.from('observations').insert({
+    has_natives: hasNatives,
+    latitude:    currentLat,
+    longitude:   currentLng,
+    address:     currentAddress,
+    user_id:     currentSession.user.id
+  });
+
+  if (error) {
+    saveError.textContent = 'Save failed — tap again to retry.';
+    saveError.classList.remove('hidden');
+    yesBtn.disabled = false;
+    noBtn.disabled = false;
+    return;
+  }
+
+  // Success toast
+  clearTimeout(toastTimer);
+  saveToast.classList.remove('hidden');
+  toastTimer = setTimeout(() => saveToast.classList.add('hidden'), 1500);
+  yesBtn.disabled = false;
+  noBtn.disabled = false;
 }
 
 function showLogin() {
@@ -100,6 +142,7 @@ function showLogin() {
 }
 
 function showField(session) {
+  currentSession = session;
   userEmailEl.textContent = session.user.email;
   fieldView.classList.remove('hidden');
   loginView.classList.add('hidden');
@@ -120,6 +163,9 @@ signInBtn.addEventListener('click', async () => {
     signInBtn.textContent = 'Sign in with Google';
   }
 });
+
+yesBtn.addEventListener('click', () => saveObservation(true));
+noBtn.addEventListener('click', () => saveObservation(false));
 
 signOutBtn.addEventListener('click', async () => {
   stopGPS();
